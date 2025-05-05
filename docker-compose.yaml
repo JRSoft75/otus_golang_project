@@ -1,0 +1,7 @@
+services:
+  resizer-test-nginx:
+    image: nginx:latest
+    ports:
+      - "${NGINX_PORT}:80"
+    volumes:
+      - ./:/var/www
