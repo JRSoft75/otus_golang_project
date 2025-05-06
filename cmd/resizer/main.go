@@ -23,27 +23,12 @@ import (
 	//"resizer/server"
 	//"strconv"
 	"strings"
+
+	"crypto/sha256"
+	"encoding/hex"
 )
 
 var slashRegex = regexp.MustCompile(`^/+`)
-
-//func getIntEnv(key string, defaultValue int) int {
-//	if value, exists := os.LookupEnv(key); exists {
-//		var intValue int
-//		_, err := fmt.Sscanf(value, "%d", &intValue)
-//		if err == nil {
-//			return intValue
-//		}
-//	}
-//	return defaultValue
-//}
-//
-//func getStringEnv(key, defaultValue string) string {
-//	if value, exists := os.LookupEnv(key); exists {
-//		return value
-//	}
-//	return defaultValue
-//}
 
 func main() {
 	var versionFlag bool
@@ -107,8 +92,11 @@ func main() {
 				parsedURL.Path = slashRegex.ReplaceAllString(parsedURL.Path, "")
 				rawURL = "http://" + parsedURL.Path
 
+				// Генерируем хэш от URL
+				urlHash := GenerateHash(parsedURL.String())
+
 				// Генерируем ключ для кэша
-				cacheKey := fmt.Sprintf("%s_%s_%s", width, height, rawURL)
+				cacheKey := fmt.Sprintf("%s_%s_%s", width, height, urlHash)
 
 				// Проверяем наличие в кэше
 				if data, ok := lruCache.Get(cacheKey); ok {
@@ -135,7 +123,7 @@ func main() {
 				}
 
 				// Сохраняем в кэш
-				if err := lruCache.Set(cacheKey+"_"+format, resizedData); err != nil {
+				if err := lruCache.Set(cacheKey, resizedData); err != nil {
 					logg.Error(fmt.Sprintf("Failed to cache image: %v", err))
 				}
 
@@ -183,6 +171,12 @@ func getContentType(format string) string {
 	default:
 		return "application/octet-stream"
 	}
+}
+
+// GenerateHash создает SHA256 хэш от строки и возвращает его в виде шестнадцатеричной строки
+func GenerateHash(input string) string {
+	hash := sha256.Sum256([]byte(input))
+	return hex.EncodeToString(hash[:])
 }
 
 //func runServer(ctx context.Context) error {

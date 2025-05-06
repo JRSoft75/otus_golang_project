@@ -41,13 +41,14 @@ func NewCache(capacity int, dir string) (Cache, error) {
 func (c *lruCache) Set(key string, data []byte) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+	// Создаем путь к файлу на основе хэша
 	filePath := filepath.Join(c.dir, key)
 	if err := os.WriteFile(filePath, data, 0644); err != nil {
 		return err
 	}
 
 	if item, found := c.items[key]; found {
-		// Update the value and move to front
+		// обновляем и перемещаем вперед списка
 		item.Value.(*cacheItem).value = filePath
 		c.queue.MoveToFront(item)
 		return nil
@@ -57,11 +58,14 @@ func (c *lruCache) Set(key string, data []byte) error {
 	listItem := c.queue.PushFront(newItem)
 	c.items[key] = listItem
 
-	// Check capacity
 	if c.queue.Len() > c.capacity {
-		// Remove the least recently used item
+		// удаляем давно не использованный элемент
 		backItem := c.queue.Back()
 		if backItem != nil {
+			path := backItem.Value.(*cacheItem).value
+			err := os.Remove(path.(string))
+			if err != nil {
+			}
 			c.queue.Remove(backItem)
 			delete(c.items, backItem.Value.(*cacheItem).key)
 		}
@@ -75,7 +79,6 @@ func (c *lruCache) Get(key string) ([]byte, bool) {
 	defer c.mu.Unlock()
 
 	if item, found := c.items[key]; found {
-		// Move to front and return value
 		c.queue.MoveToFront(item)
 		path := item.Value.(*cacheItem).value
 		data, err := os.ReadFile(path.(string))
