@@ -1,8 +1,6 @@
 package main
 
 import (
-	//"context"
-	//"flag"
 	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
@@ -14,14 +12,10 @@ import (
 	"regexp"
 	"strconv"
 
-	//"os/signal"
-	//"resizer"
 	"resizer/config"
 	"resizer/internal/cache"
 	"resizer/internal/image"
 	"resizer/logger"
-	//"resizer/server"
-	//"strconv"
 	"strings"
 
 	"crypto/sha256"
@@ -173,167 +167,8 @@ func getContentType(format string) string {
 	}
 }
 
-// GenerateHash создает SHA256 хэш от строки и возвращает его в виде шестнадцатеричной строки
+// GenerateHash создает SHA256 хэш от строки и возвращает его в виде шестнадцатеричной строки.
 func GenerateHash(input string) string {
 	hash := sha256.Sum256([]byte(input))
 	return hex.EncodeToString(hash[:])
 }
-
-//func runServer(ctx context.Context) error {
-//	//if err := checkVipsVersion(bimg.VipsMajorVersion, bimg.VipsMinorVersion); err != nil {
-//	//	return err
-//	//}
-//	//configPath := flag.String("config", "", "Path of config file in yml format")
-//	//flag.Parse()
-//	//if *configPath == "" {
-//	//	return fmt.Errorf("Set config.yml path via -config flag.")
-//	//}
-//	//file, err := os.Open(*configPath)
-//	//if err != nil {
-//	//	return fmt.Errorf("Error loading config: %v", err)
-//	//}
-//	//config, err := parseConfig(file)
-//	//file.Close()
-//	//if err != nil {
-//	//	return err
-//	//}
-//	//if config.LogPath != "" {
-//	//	logFile, err := os.OpenFile(config.LogPath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
-//	//	if err != nil {
-//	//		return fmt.Errorf("Could not open log file: %v", err)
-//	//	}
-//	//	defer logFile.Close()
-//	//	log.SetOutput(logFile)
-//	//} else {
-//	//	log.SetOutput(os.Stdout)
-//	//}
-//
-//	//server := createServer(config)
-//	//
-//	//done := make(chan os.Signal, 1)
-//	//signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
-//	//defer close(done)
-//	//
-//	//serverErr := make(chan error)
-//	//defer close(serverErr)
-//	//
-//	//go func() {
-//	//	log.Printf("Starting server on %s", config.ServerAddress)
-//	//	if err := server.ListenAndServe(config.ServerAddress); err != nil {
-//	//		serverErr <- err
-//	//	}
-//	//}()
-//	//
-//	//select {
-//	//case <-done:
-//	//	return server.Shutdown()
-//	//case <-ctx.Done():
-//	//	return server.Shutdown()
-//	//case err := <-serverErr:
-//	//	return err
-//	//}
-//}
-//
-////func main() {
-////	ctx := context.Background()
-////	err := runServer(ctx)
-////	if err != nil {
-////		log.Fatal(err)
-////		ctx.Done()
-////	}
-////
-////}
-//
-//func main() {
-//	var configFile string
-//	var versionFlag bool
-//
-//	// Определение режима работы (по умолчанию production)
-//	isDevelopment := strings.ToLower(os.Getenv("ENV_APP")) == "dev"
-//
-//	rootCmd := &cobra.Command{
-//		Use:   "resizer",
-//		Short: "Image resize service",
-//		Run: func(_ *cobra.Command, _ []string) {
-//			if versionFlag {
-//				printVersion()
-//				return
-//			}
-//			cfg, err := config.LoadConfig(configFile)
-//			if err != nil {
-//				log.Fatalf("failed to load config: %v", err)
-//			}
-//
-//			logg, err := logger.NewLogger(cfg.Logger.Level, isDevelopment)
-//			if err != nil {
-//				log.Fatalf("failed to initialize logger: %v", err)
-//			}
-//			defer func(logg *zap.Logger) {
-//				err := logg.Sync()
-//				if err != nil {
-//
-//				}
-//			}(logg)
-//
-//			//var storage storagePackage.Storage
-//			//
-//			//storage = memorystorage.NewInMemoryStorage()
-//
-//			logg.Info("Storage is running...")
-//			//calendar := app.New(logg, storage)
-//			serv := server.NewServer(
-//				logg,
-//				//calendar,
-//				cfg.Server.Host,
-//				cfg.Server.Port,
-//				//time.Duration(cfg.Server.ReadTimeout),
-//				//time.Duration(cfg.Server.WriteTimeout),
-//			)
-//			ctx, cancel := signal.NotifyContext(context.Background(),
-//				syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
-//			defer cancel()
-//
-//			go func() {
-//				<-ctx.Done()
-//
-//				ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-//				defer cancel()
-//
-//				if err := serv.Stop(ctx); err != nil {
-//					logg.Error("failed to stop http server: " + err.Error())
-//				}
-//			}()
-//
-//			if err := serv.Start(ctx); err != nil {
-//				logg.Error("failed to start http server: " + err.Error())
-//				cancel()
-//				os.Exit(1)
-//			}
-//			//var serv = serv.NewServer(
-//			//	resizer.NewApp(),
-//			//	cfg.Server.Host,
-//			//	cfg.Server.Port,
-//			//	time.Duration(cfg.Server.ReadTimeout),
-//			//	logg,
-//			//	os.Args[1:],
-//			//)
-//			//if serv != nil {
-//			//	serv.Run()
-//			//}
-//		},
-//	}
-//	// Флаг для указания пути к конфигурационному файлу
-//	rootCmd.Flags().StringVar(&configFile, "config", "", "path to config file (required)")
-//
-//	// Флаг --version
-//	rootCmd.Flags().BoolVar(&versionFlag, "version", false, "print the version of the application")
-//	// err := rootCmd.MarkFlagRequired("config")
-//	// if err != nil {
-//	//	return
-//	// }
-//
-//	if err := rootCmd.Execute(); err != nil {
-//		log.Fatalf("command execution failed: %v", err)
-//	}
-//
-//}

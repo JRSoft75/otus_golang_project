@@ -9,7 +9,6 @@ import (
 	"image/jpeg"
 	"image/png"
 	"io"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -37,7 +36,7 @@ func DownloadImage(url string, headers http.Header) ([]byte, error) {
 	}(resp.Body)
 
 	// Читаем тело ответа
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -70,6 +69,9 @@ func ResizeImage(data []byte, width, height int) ([]byte, string, error) {
 		err = gif.Encode(&buf, resized, nil)
 	default:
 		return nil, "", fmt.Errorf("unsupported image format: %s", format)
+	}
+	if err != nil {
+		return nil, "", err
 	}
 
 	return buf.Bytes(), format, nil

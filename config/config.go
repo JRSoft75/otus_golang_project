@@ -23,8 +23,8 @@ type Config struct {
 	Storage struct {
 		CacheSize            int    `yaml:"cache_size"`
 		CacheDir             string `yaml:"cache_dir"`
-		DefaultImageQuality  int    `yaml:"default_image_quality"`
-		MaxUploadedImageSize int    `yaml:"max_uploaded_image_size"` // in megabytes
+		DefaultImageQuality  int    `yaml:"defaultImageQuality"`
+		MaxUploadedImageSize int    `yaml:"maxUploadedImageSize"` // in megabytes
 		ReadTimeout          int    `yaml:"readTimeout"`
 	} `yaml:"storage"`
 }

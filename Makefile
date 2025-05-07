@@ -13,4 +13,8 @@ build:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/resizer
 
 run: build
-	$(BIN) --config ./configs/config.yaml
+	$(BIN)
+	#$(BIN) --config ./configs/config.yaml
+
+test:
+	go test -v -count=1 -race -timeout=1m ./internal/...
