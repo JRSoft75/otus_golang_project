@@ -1,7 +1,8 @@
 BIN := "./bin/resizer"
+GIT_HASH := $(shell git log --format="%h" -n 1)
+LDFLAGS := -X main.release="develop" -X main.buildDate=$(shell date -u +%Y-%m-%dT%H:%M:%S) -X main.gitHash=$(GIT_HASH)
 
-version: build
-	$(BIN) version
+
 
 install-lint-deps:
 	(which golangci-lint > /dev/null) || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin v1.64.6
@@ -9,12 +10,15 @@ install-lint-deps:
 lint: install-lint-deps
 	golangci-lint run ./...
 
-build:
+building:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/resizer
 
-run: build
+run: building
 	$(BIN)
 	#$(BIN) --config ./configs/config.yaml
 
 test:
 	go test -v -count=1 -race -timeout=1m ./internal/...
+
+version: building
+	$(BIN) --version

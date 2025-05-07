@@ -11,7 +11,7 @@ COPY . ./
 
 RUN go test ./... -cover
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /resizer ./cmd/resizer/
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /resizer ./bin/resizer/
 
 FROM scratch
 
