@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"os"
+
+	"gopkg.in/yaml.v3"
 )
 
 // LoggerConfig представляет настройки логгера.
@@ -21,8 +22,8 @@ type Config struct {
 	Logger  LoggerConfig `yaml:"logger"`
 	Server  ServerConfig `yaml:"server"`
 	Storage struct {
-		CacheSize            int    `yaml:"cache_size"`
-		CacheDir             string `yaml:"cache_dir"`
+		CacheSize            int    `yaml:"cacheSize"`
+		CacheDir             string `yaml:"cacheDir"`
 		DefaultImageQuality  int    `yaml:"defaultImageQuality"`
 		MaxUploadedImageSize int    `yaml:"maxUploadedImageSize"` // in megabytes
 		ReadTimeout          int    `yaml:"readTimeout"`

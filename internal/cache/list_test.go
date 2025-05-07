@@ -3,7 +3,7 @@ package cache
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/require" //nolint:depguard
 )
 
 func TestList(t *testing.T) {

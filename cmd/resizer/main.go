@@ -1,25 +1,24 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
-	"github.com/joho/godotenv"
-	"github.com/spf13/cobra"
-	"go.uber.org/zap"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
 	"strconv"
-
-	"resizer/config"
-	"resizer/internal/cache"
-	"resizer/internal/image"
-	"resizer/logger"
 	"strings"
 
-	"crypto/sha256"
-	"encoding/hex"
+	"github.com/joho/godotenv" //nolint:depguard
+	"github.com/spf13/cobra"   //nolint:depguard
+	"go.uber.org/zap"
+	"resizer/config"         //nolint:depguard
+	"resizer/internal/cache" //nolint:depguard
+	"resizer/internal/image" //nolint:depguard
+	"resizer/logger"         //nolint:depguard
 )
 
 var slashRegex = regexp.MustCompile(`^/+`)
@@ -47,7 +46,6 @@ func main() {
 	defer func(logg *zap.Logger) {
 		err := logg.Sync()
 		if err != nil {
-
 		}
 	}(logg)
 
@@ -96,7 +94,7 @@ func main() {
 				if data, ok := lruCache.Get(cacheKey); ok {
 					format := cacheKey[strings.LastIndex(cacheKey, "_")+1:] // Извлекаем формат из ключа
 					w.Header().Set("Content-Type", getContentType(format))
-					_, err := w.Write(data)
+					_, err = w.Write(data)
 					if err != nil {
 						return
 					}
@@ -142,7 +140,6 @@ func main() {
 	if err := rootCmd.Execute(); err != nil {
 		logg.Fatal(fmt.Sprintf("command execution failed: %v", err))
 	}
-
 }
 
 func atoi(s string) int {

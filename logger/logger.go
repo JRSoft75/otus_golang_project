@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -38,7 +39,6 @@ func NewLogger(level string, isDevelopment bool) (*zap.Logger, error) {
 	config.OutputPaths = []string{"stdout"}
 	config.ErrorOutputPaths = []string{"stderr"}
 	logger, err = config.Build()
-
 	if err != nil {
 		return nil, err
 	}

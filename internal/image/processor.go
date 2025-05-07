@@ -3,13 +3,14 @@ package image
 import (
 	"bytes"
 	"fmt"
-	"github.com/disintegration/imaging"
 	"image"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"io"
 	"net/http"
+
+	"github.com/disintegration/imaging"
 )
 
 func DownloadImage(url string, headers http.Header) ([]byte, error) {
@@ -31,7 +32,6 @@ func DownloadImage(url string, headers http.Header) ([]byte, error) {
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-
 		}
 	}(resp.Body)
 

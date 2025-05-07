@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/require" //nolint:depguard
 )
 
 func TestLRUCache_simple(t *testing.T) {
@@ -83,7 +83,7 @@ func TestLRUCache_simple(t *testing.T) {
 }
 
 // Тест на логику выталкивания элементов из-за размера очереди
-// (например: n = 3, добавили 4 элемента - 1й из кэша вытолкнулся);
+// (например: n = 3, добавили 4 элемента - 1й из кэша вытолкнулся).
 func TestLRUCache_purge_logic(t *testing.T) {
 	// Создаем временную директорию для тестов
 	tempDir := t.TempDir()

@@ -43,7 +43,7 @@ func (c *lruCache) Set(key string, data []byte) error {
 	defer c.mu.Unlock()
 	// Создаем путь к файлу на основе хэша
 	filePath := filepath.Join(c.dir, key)
-	if err := os.WriteFile(filePath, data, 0644); err != nil {
+	if err := os.WriteFile(filePath, data, 0o644); err != nil {
 		return err
 	}
 
