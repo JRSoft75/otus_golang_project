@@ -1,4 +1,11 @@
 services:
+  resizer:
+    container_name: resizer
+    build: .
+    volumes:
+      - ./:/app
+    working_dir: /app
+
   resizer-test-nginx:
     image: nginx:latest
     ports:

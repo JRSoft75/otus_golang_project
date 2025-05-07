@@ -10,7 +10,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/disintegration/imaging"
+	"github.com/disintegration/imaging" //nolint:depguard
 )
 
 func DownloadImage(url string, headers http.Header) ([]byte, error) {
