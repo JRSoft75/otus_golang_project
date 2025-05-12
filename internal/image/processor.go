@@ -2,6 +2,7 @@ package image
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"image"
 	"image/gif"
@@ -9,13 +10,18 @@ import (
 	"image/png"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/disintegration/imaging" //nolint:depguard
 )
 
 func DownloadImage(url string, headers http.Header) ([]byte, error) {
-	// Создаем новый HTTP-запрос
-	req, err := http.NewRequest("GET", url, nil)
+	// Создаем контекст с таймаутом 10 секунд
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// Создаем новый HTTP-запрос с контекстом
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -29,21 +35,21 @@ func DownloadImage(url string, headers http.Header) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-		}
-	}(resp.Body)
+
+	// Гарантируем закрытие тела ответа
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	// Проверяем статус ответа
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to download image: status code %d", resp.StatusCode)
+	}
 
 	// Читаем тело ответа
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// Проверяем статус ответа
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to download image: status code %d", resp.StatusCode)
 	}
 
 	return data, nil

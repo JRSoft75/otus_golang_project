@@ -1,0 +1,32 @@
+name: Image resizer tests
+
+on:
+  push:
+    branches: [main]
+
+env:
+  GO111MODULE: "on"
+
+jobs:
+  tests_by_makefile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.24
+
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: make lint
+        run: make lint
+        working-directory: resizer
+
+      - name: make build
+        run: make build
+        working-directory: resizer
+
+      - name: make test
+        run: make test
+        working-directory: resizer

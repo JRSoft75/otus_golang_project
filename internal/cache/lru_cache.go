@@ -63,9 +63,7 @@ func (c *lruCache) Set(key string, data []byte) error {
 		backItem := c.queue.Back()
 		if backItem != nil {
 			path := backItem.Value.(*cacheItem).value
-			err := os.Remove(path.(string))
-			if err != nil {
-			}
+			_ = os.Remove(path.(string))
 			c.queue.Remove(backItem)
 			delete(c.items, backItem.Value.(*cacheItem).key)
 		}
