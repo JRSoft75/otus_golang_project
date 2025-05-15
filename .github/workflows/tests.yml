@@ -21,12 +21,9 @@ jobs:
 
       - name: make lint
         run: make lint
-#        working-directory: resizer
 
       - name: make build
         run: make build
-#        working-directory: resizer
 
       - name: make test
         run: make test
-#        working-directory: resizer

@@ -17,7 +17,7 @@ func TestLRUCache_simple(t *testing.T) {
 	tempDir := t.TempDir()
 
 	// Инициализация LRU-кэша
-	c, err := NewCache(10, tempDir)
+	c, err := NewCache(2, tempDir)
 	if err != nil {
 		t.Fatalf("Failed to create cache: %v", err)
 	}
