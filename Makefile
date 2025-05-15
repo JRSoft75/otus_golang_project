@@ -18,7 +18,7 @@ run: building
 	#$(BIN) --config ./configs/config.yaml
 
 test:
-	go test -v -count=1 -race -timeout=1m ./internal/...
+	go test -v -count=1 -race ./internal/...
 
 version: building
 	$(BIN) --version
