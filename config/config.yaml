@@ -1,11 +1,11 @@
 logger:
   level: "info"
 storage:
-  cache_size: 5
-  cache_dir: "./tmp"
-  default_image_quality: 90
-  max_uploaded_image_size: 10 # in megabytes
-  read_timeout: 10
+  cacheSize: 5
+  cacheDir: "./tmp"
+  defaultImageQuality: 90
+  maxUploadedImageSize: 10 # in megabytes
+  readTimeout: 10
 server:
   host: "localhost"
   port: 8080
