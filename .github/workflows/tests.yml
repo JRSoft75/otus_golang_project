@@ -31,17 +31,5 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Install Docker Compose
-        run: |
-          echo "Installing Docker Compose..."
-          OS=$(uname -s)
-          ARCH=$(uname -m)
-          echo "Detected OS: $OS, ARCH: $ARCH"
-          URL="https://github.com/docker/compose/releases/download/v2.21.0/docker-compose- $OS-$ARCH"
-          echo "Downloading from URL: $URL"
-          sudo curl -L "$URL" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
       - name: Run integration tests
         run: make integration-test

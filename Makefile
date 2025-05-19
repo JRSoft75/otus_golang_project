@@ -21,7 +21,9 @@ test:
 	go test -v -count=1 -race ./internal/...
 
 integration-test:
-	go test -v ./integration_test/...
+	docker compose up -d
+	go test -v ./integration_test/
+	docker compose down
 
 version: building
 	$(BIN) --version

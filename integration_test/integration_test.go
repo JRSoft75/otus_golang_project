@@ -3,25 +3,12 @@ package integration_test
 import (
 	"context"
 	"net/http"
-	"os/exec"
 	"strings"
 	"testing"
 	"time"
 )
 
 func TestResizeService(t *testing.T) {
-	// Запуск docker-compose
-	cmd := exec.Command("docker-compose", "up", "-d")
-	err := cmd.Run()
-	if err != nil {
-		t.Fatalf("Failed to start docker-compose: %v", err)
-	}
-	defer func() {
-		// Остановка docker-compose после завершения тестов
-		stopCmd := exec.Command("docker-compose", "down")
-		_ = stopCmd.Run()
-	}()
-
 	// Ждем, пока сервисы станут доступны
 	time.Sleep(5 * time.Second)
 
