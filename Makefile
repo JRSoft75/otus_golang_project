@@ -22,3 +22,6 @@ test:
 
 version: building
 	$(BIN) --version
+
+webtest:
+	docker compose up -d resizer-test-nginx

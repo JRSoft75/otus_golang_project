@@ -1,14 +1,17 @@
 services:
-  resizer:
-    container_name: resizer
-    build: .
-    volumes:
-      - ./:/app
-    working_dir: /app
+#  resizer:
+#    container_name: resizer
+#    build: .
+#    volumes:
+#      - ./:/app
+#    working_dir: /app
 
   resizer-test-nginx:
-    image: nginx:latest
+    image: nginx:alpine
+    container_name: nginx-resizer
     ports:
-      - "${NGINX_PORT}:80"
+      - "8081:80"
     volumes:
-      - ./:/var/www
+      - ./test/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./test/images:/usr/share/nginx/html/images:ro
+      - ./test/404.html:/usr/share/nginx/html/404.html:ro

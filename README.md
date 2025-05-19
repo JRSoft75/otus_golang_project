@@ -86,3 +86,22 @@ http://cut-service.com/fill/300/200/raw.githubusercontent.com/OtusGolang/final_p
 * Понятность и чистота кода - до 3 баллов.
 
 #### Зачёт от 10 баллов
+
+
+# КАК ПРОВЕРЯТЬ:
+
+1. Запустить сервис командой `make run` в директории с проектом.
+2. Проверить работоспособность сервиса через браузер :
+http://localhost:8080/resize/200/200/<ссылка на исходное изображение> , например: http://localhost:8080/resize/200/200/https://e7.pngegg.com/pngimages/552/821/png-clipart-graphy-painting-pearl-line-text-photography.png
+
+# Проверка с локальным сервером:
+1. Запустить сервис командой `make run` в директории с проектом.
+2. Запустить сервис Nginx командой `make webtest`
+3. Проверить работоспособность сервиса через браузер
+   - Требуется авторизация (проверка на передачу заголовков): 
+    curl -H "Authorization: Bearer your-token-here" http://localhost:8080/resize/300/200/http:/localhost:8081/secure/image2.jpeg
+   - Без авторизации:
+   - в браузере: 
+   - http://localhost:8080/resize/300/200/http://localhost:8081/image1.jpg
+   - http://localhost:8080/resize/300/200/http://localhost:8081/image3.png
+   - http://localhost:8080/resize/300/200/http://localhost:8081/noexist.png
