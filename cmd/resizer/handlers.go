@@ -61,7 +61,7 @@ func ResizeHandler(lruCache cache.Cache, logg *zap.Logger) http.HandlerFunc {
 		// Загружаем и обрабатываем изображение
 		data, err := image.DownloadImage(rawURL, r.Header) // Передаем заголовки исходного запроса
 		if err != nil {
-			http.Error(w, "Failed to download image", http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("Failed to download image: %s", rawURL), http.StatusInternalServerError)
 			return
 		}
 

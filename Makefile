@@ -20,6 +20,9 @@ run: building
 test:
 	go test -v -count=1 -race ./internal/...
 
+integration-test:
+	go test -v ./integration_test/...
+
 version: building
 	$(BIN) --version
 

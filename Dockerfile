@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 WORKDIR /build
 
@@ -9,12 +9,15 @@ RUN go mod tidy
 
 COPY . ./
 
-RUN go test ./... -cover
+# RUN go test ./internal/... -cover
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /resizer ./bin/resizer/
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /bin/resizer ./cmd/resizer
+# Сборка бинарника с отладочной информацией
+#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+#    go build -gcflags="all=-N -l" -o /bin/resizer ./cmd/resizer
 
 FROM scratch
 
-COPY --from=builder /resizer /resizer
+COPY --from=builder /bin/resizer /resizer
 
 ENTRYPOINT ["/resizer"]
