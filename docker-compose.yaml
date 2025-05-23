@@ -1,0 +1,22 @@
+services:
+  resize-service:
+    build: .
+    container_name: resize-service
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+      - ./config:/app/config
+    working_dir: /app
+    depends_on:
+      - resize-nginx
+
+  resize-nginx:
+    image: nginx:alpine
+    container_name: resize-nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./integration_test/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./integration_test/images:/usr/share/nginx/html/images:ro
+      - ./integration_test/404.html:/usr/share/nginx/html/404.html:ro
